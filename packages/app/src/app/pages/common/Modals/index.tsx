@@ -7,7 +7,6 @@ import {
 import Modal from 'app/components/Modal';
 import { useOvermind } from 'app/overmind';
 import getVSCodeTheme from 'app/src/app/pages/Sandbox/Editor/utils/get-vscode-theme';
-import Loadable from 'app/utils/Loadable';
 import { templateColor } from 'app/utils/template-color';
 import React, { useCallback, useEffect, useReducer } from 'react';
 import { ThemeProvider } from 'styled-components';
@@ -34,10 +33,6 @@ import SignInForTemplates from './SignInForTemplates';
 import { StorageManagementModal } from './StorageManagementModal';
 import { SurveyModal } from './SurveyModal';
 import UploadModal from './UploadModal';
-
-const MoveSandboxFolderModal = Loadable(() =>
-  import('./MoveSandboxFolderModal')
-);
 
 const modals = {
   preferences: {
@@ -123,10 +118,6 @@ const modals = {
   forkServerModal: {
     Component: ForkServerModal,
     width: 500,
-  },
-  moveSandbox: {
-    Component: MoveSandboxFolderModal,
-    width: 350,
   },
   feedback: {
     Component: FeedbackModal,

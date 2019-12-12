@@ -6,13 +6,11 @@ import { getSandboxName } from '@codesandbox/common/lib/utils/get-sandbox-name';
 import { inject, observer } from 'app/componentConnectors';
 import { Skeleton } from 'app/components/Skeleton';
 import { Title } from 'app/components/Title';
-import { GithubIntegration } from 'app/pages/common/GithubIntegration';
 import { Navigation } from 'app/pages/common/Navigation';
 import { NotFound } from 'app/pages/common/NotFound';
 import { QuickActions } from 'app/pages/Sandbox/QuickActions';
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router-dom';
 
 import Editor from './Editor';
 
@@ -60,12 +58,7 @@ class SandboxPage extends React.Component {
   getContent() {
     const { store } = this.props;
 
-    const { hasLogIn } = store;
-
     if (store.editor.error) {
-      const isGithub = this.props.match.params.id.includes('github');
-      const hasPrivateAccess = store.user && store.user.integrations.github;
-
       return (
         <>
           <div
@@ -87,28 +80,9 @@ class SandboxPage extends React.Component {
               Create Sandbox
             </Button>
             <Button block small style={{ margin: '.5rem' }} href="/">
-              {hasLogIn ? 'Dashboard' : 'Homepage'}
+              Homepage
             </Button>
           </div>
-          {hasLogIn && isGithub && !hasPrivateAccess && (
-            <div style={{ maxWidth: 400, marginTop: '2.5rem', width: '100%' }}>
-              <div
-                style={{
-                  fontWeight: 300,
-                  color: 'rgba(255, 255, 255, 0.7)',
-                  marginBottom: '1rem',
-                  fontSize: '1rem',
-                  textAlign: 'center',
-                  lineHeight: 1.6,
-                }}
-              >
-                Did you try to open a private GitHub repository and are you a{' '}
-                <Link to="/patron">patron</Link>? Then you might need to get
-                private access:
-              </div>
-              <GithubIntegration small />
-            </div>
-          )}
         </>
       );
     }

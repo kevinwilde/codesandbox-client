@@ -2,7 +2,6 @@ import React from 'react';
 import { InstantSearch, Configure, PoweredBy } from 'react-instantsearch/dom';
 import { connectAutoComplete } from 'react-instantsearch/connectors';
 
-import Style from 'app/pages/Search/search';
 import DependenciesCSS from './dependencies';
 
 import RawAutoComplete from './RawAutoComplete';
@@ -48,7 +47,6 @@ export default class SearchDependencies extends React.PureComponent {
   render() {
     return (
       <div className="search-dependencies">
-        <Style />
         <DependenciesCSS />
         <InstantSearch
           appId="OFCNCOG2CU"
