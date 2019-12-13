@@ -3,8 +3,6 @@ import JSON from 'json5';
 import codesandbox from '@codesandbox/common/lib/themes/codesandbox.json';
 
 import themes from '@codesandbox/common/lib/themes';
-import { notificationState } from '@codesandbox/common/lib/utils/notifications';
-import { NotificationStatus } from '@codesandbox/notifications';
 
 const editorBackground = 'editor.background';
 const editorForeground = 'editor.foreground';
@@ -60,11 +58,6 @@ function fetchTheme(foundTheme) {
         theme = parseTheme(text);
       } catch (e) {
         console.error(e);
-
-        notificationState.addNotification({
-          message: 'We had trouble loading the theme, error: \n' + e.message,
-          status: NotificationStatus.ERROR,
-        });
       }
       return theme;
     });
@@ -76,13 +69,6 @@ const findTheme = async (themeName, customTheme) => {
       return parseTheme(customTheme);
     } catch (e) {
       console.error(e);
-
-      notificationState.addNotification({
-        message:
-          'We had trouble parsing your custom VSCode Theme, error: \n' +
-          e.message,
-        status: NotificationStatus.ERROR,
-      });
     }
   }
 

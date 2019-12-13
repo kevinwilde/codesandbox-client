@@ -6,7 +6,6 @@ import {
   Module,
   Selection,
 } from '@codesandbox/common/lib/types';
-import { NotificationStatus } from '@codesandbox/notifications/lib/state';
 import { Operator } from 'app/overmind';
 import { camelizeKeys } from 'humps';
 import { json, mutate } from 'overmind';
@@ -14,21 +13,7 @@ import { json, mutate } from 'overmind';
 export const onJoin: Operator<LiveMessage<{
   status: 'connected';
   live_user_id: string;
-}>> = mutate(({ effects, state }, { data }) => {
-  state.live.liveUserId = data.live_user_id;
-
-  effects.notificationToast.success(
-    state.live.isTeam ? 'Connected to Live Team!' : 'Connected to Live!'
-  );
-
-  if (state.live.reconnecting) {
-    effects.live.getAllClients().forEach(client => {
-      client.serverReconnect();
-    });
-  }
-
-  state.live.reconnecting = false;
-});
+}>> = mutate(({ effects, state }, { data }) => {});
 
 export const onModuleState: Operator<LiveMessage<{
   module_state: any;
@@ -53,19 +38,6 @@ export const onUserEntered: Operator<LiveMessage<{
   state.live.roomInfo.users = users as any;
   state.live.roomInfo.editorIds = data.editor_ids;
   state.live.roomInfo.ownerIds = data.owner_ids;
-
-  if (data.joined_user_id === state.live.liveUserId) {
-    return;
-  }
-
-  const user = data.users.find(u => u.id === data.joined_user_id);
-
-  if (!state.live.notificationsHidden) {
-    effects.notificationToast.add({
-      message: `${user.username} joined the live session.`,
-      status: NotificationStatus.NOTICE,
-    });
-  }
 });
 
 export const onUserLeft: Operator<LiveMessage<{
@@ -74,20 +46,6 @@ export const onUserLeft: Operator<LiveMessage<{
   editor_ids: string[];
   owner_ids: string[];
 }>> = mutate(({ state, actions, effects }, { data }) => {
-  if (!state.live.notificationsHidden) {
-    const { users } = state.live.roomInfo;
-    const user = users ? users.find(u => u.id === data.left_user_id) : null;
-
-    if (user.id !== state.live.liveUserId) {
-      effects.notificationToast.add({
-        message: user
-          ? `${user.username} left the live session.`
-          : 'Someone left the live session',
-        status: NotificationStatus.NOTICE,
-      });
-    }
-  }
-
   actions.live.internal.clearUserSelections(data.left_user_id);
 
   const users = camelizeKeys(data.users);
@@ -453,10 +411,6 @@ export const onOperation: Operator<LiveMessage<{
 export const onConnectionLoss: Operator<LiveMessage> = mutate(
   ({ state, effects }) => {
     if (!state.live.reconnecting) {
-      effects.notificationToast.add({
-        message: 'We lost connection with the live server, reconnecting...',
-        status: NotificationStatus.ERROR,
-      });
       state.live.reconnecting = true;
     }
   }
@@ -516,9 +470,4 @@ export const onChat: Operator<LiveMessage<{
 export const onNotification: Operator<LiveMessage<{
   message: string;
   type: NotificationStatus;
-}>> = mutate(({ effects }, { data }) => {
-  effects.notificationToast.add({
-    message: data.message,
-    status: data.type,
-  });
-});
+}>> = mutate(({ effects }, { data }) => {});

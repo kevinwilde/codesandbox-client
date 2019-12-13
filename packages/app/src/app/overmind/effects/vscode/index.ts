@@ -9,11 +9,6 @@ import {
   SandboxFs,
   Settings,
 } from '@codesandbox/common/lib/types';
-import { notificationState } from '@codesandbox/common/lib/utils/notifications';
-import {
-  NotificationMessage,
-  NotificationStatus,
-} from '@codesandbox/notifications/lib/state';
 import { Reaction } from 'app/overmind';
 import prettify from 'app/src/app/utils/prettify';
 import { blocker } from 'app/utils/blocker';
@@ -923,28 +918,8 @@ export class VSCodeEffect {
   private addNotification(
     message: string,
     type: 'error' | 'info' | 'warning' | 'success',
-    options: { actions: NotificationMessage['actions']; sticky?: boolean }
-  ) {
-    const getStatus = () => {
-      switch (type) {
-        case 'error':
-          return NotificationStatus.ERROR;
-        case 'warning':
-          return NotificationStatus.WARNING;
-        case 'success':
-          return NotificationStatus.SUCCESS;
-        default:
-          return NotificationStatus.NOTICE;
-      }
-    };
-
-    notificationState.addNotification({
-      message,
-      status: getStatus(),
-      sticky: options.sticky,
-      actions: options.actions,
-    });
-  }
+    options: any
+  ) {}
 }
 
 export default new VSCodeEffect();

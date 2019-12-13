@@ -78,8 +78,7 @@ export const deleteTemplate: AsyncAction<{
     effects.analytics.track('Template - Removed', { source: 'Context Menu' });
     await effects.api.deleteTemplate(sandboxId, templateId);
     actions.modalClosed();
-    effects.notificationToast.success('Template Deleted');
   } catch (error) {
-    effects.notificationToast.error('Could not delete custom template');
+
   }
 };

@@ -7,8 +7,6 @@ import {
   IntrospectionFragmentMatcher,
 } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
-import { notificationState } from '@codesandbox/common/lib/utils/notifications';
-import { NotificationStatus } from '@codesandbox/notifications';
 import introspectionQueryResultData from './introspection-result';
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
@@ -40,23 +38,7 @@ const absintheAfterware = new ApolloLink((operation, forward) =>
   }))
 );
 
-const errorHandler = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) {
-    graphQLErrors.forEach(({ message }) => {
-      notificationState.addNotification({
-        message,
-        status: NotificationStatus.ERROR,
-      });
-    });
-  }
-
-  if (networkError) {
-    notificationState.addNotification({
-      message: `Network Error: ${networkError}`,
-      status: NotificationStatus.ERROR,
-    });
-  }
-});
+const errorHandler = onError(({ graphQLErrors, networkError }) => {});
 
 export const client = new ApolloClient({
   link: authLink.concat(

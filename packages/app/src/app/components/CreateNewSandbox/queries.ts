@@ -5,9 +5,6 @@ import {
   addSandboxesToFolder,
   PATHED_SANDBOXES_CONTENT_QUERY,
 } from 'app/pages/Dashboard/queries';
-import { notificationState } from '@codesandbox/common/lib/utils/notifications';
-import track from '@codesandbox/common/lib/utils/analytics';
-import { NotificationStatus } from '@codesandbox/notifications';
 import {
   UnmakeSandboxesTemplateMutation,
   UnmakeSandboxesTemplateMutationVariables,
@@ -242,26 +239,6 @@ export function makeTemplates(
           }
         },
       })
-      .then(() => {
-        notificationState.addNotification({
-          message: `Successfully created ${selectedSandboxes.length} template${
-            selectedSandboxes.length === 1 ? '' : 's'
-          }`,
-          status: NotificationStatus.SUCCESS,
-          actions: {
-            primary: [
-              {
-                label: 'Undo',
-                run: () => {
-                  track('Template - Removed', {
-                    source: 'Undo',
-                  });
-                  unmakeTemplates(unpackedSelectedSandboxes);
-                },
-              },
-            ],
-          },
-        });
-      }),
+      .then(() => {}),
   ]);
 }

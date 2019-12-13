@@ -13,10 +13,6 @@ import {
 } from '@codesandbox/common/lib/utils/analytics';
 import { logBreadcrumb } from '@codesandbox/common/lib/utils/analytics/sentry';
 import _debug from '@codesandbox/common/lib/utils/debug';
-import {
-  convertTypeToStatus,
-  notificationState,
-} from '@codesandbox/common/lib/utils/notifications';
 import { isSafari } from '@codesandbox/common/lib/utils/platform';
 import { Severity } from '@sentry/browser';
 import { client } from 'app/graphql/client';
@@ -121,12 +117,7 @@ overmind.initialized.then(() => {
 
     const rootEl = document.getElementById('root');
 
-    const showNotification = (message, type) => {
-      notificationState.addNotification({
-        message,
-        status: convertTypeToStatus(type),
-      });
-    };
+    const showNotification = (message, type) => {};
 
     window.showNotification = showNotification;
 

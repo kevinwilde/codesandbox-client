@@ -71,18 +71,6 @@ export const tagsChanged: AsyncAction<{
   newTags: string[];
   removedTags: string[];
 }> = async ({ actions, effects, state }, { newTags, removedTags }) => {
-  const { tags } = state.editor.currentSandbox;
-  if (tags.length > 5) {
-    return effects.notificationToast.error('You can have a maximum of 5 tags');
-  }
-
-  const tagWasRemoved =
-    newTags.length < tags.length && removedTags.length === 1;
-  if (tagWasRemoved) {
-    return removedTags.forEach(actions.workspace.tagRemoved);
-  }
-
-  return actions.workspace.tagAdded();
 };
 
 export const sandboxInfoUpdated: AsyncAction = withOwnedSandbox(
@@ -198,7 +186,6 @@ export const sandboxDeleted: AsyncAction = async ({
 
   // Not sure if this is in use?
   state.workspace.showDeleteSandboxModal = false;
-  effects.notificationToast.success('Sandbox deleted!');
 
   effects.router.redirectToSandboxWizard();
 };
@@ -247,78 +234,18 @@ export const deleteTemplate: AsyncAction = async ({
   state,
   actions,
   effects,
-}) => {
-  effects.analytics.track('Template - Removed', { source: 'editor' });
-  const sandboxId = state.editor.currentSandbox.id;
-  const templateId = state.editor.currentSandbox.customTemplate.id;
-
-  try {
-    await effects.api.deleteTemplate(sandboxId, templateId);
-    const sandbox = state.editor.sandboxes[sandboxId];
-
-    sandbox.isFrozen = false;
-    sandbox.customTemplate = null;
-    actions.modalClosed();
-    effects.notificationToast.success('Template Deleted');
-  } catch (error) {
-    actions.internal.handleError({
-      message: 'Could not delete custom template',
-      error,
-    });
-  }
-};
+}) => {};
 
 export const editTemplate: AsyncAction<CustomTemplate> = async (
   { state, actions, effects },
   template
-) => {
-  effects.analytics.track('Template - Edited', { source: 'editor' });
-
-  const sandboxId = state.editor.currentSandbox.id;
-
-  try {
-    const updatedTemplate = await effects.api.updateTemplate(
-      sandboxId,
-      template
-    );
-
-    actions.modalClosed();
-    state.editor.currentSandbox.customTemplate = updatedTemplate;
-    effects.notificationToast.success('Template Edited');
-  } catch (error) {
-    actions.internal.handleError({
-      message: 'Could not edit custom template',
-      error,
-    });
-  }
-};
+) => {};
 
 export const addedTemplate: AsyncAction<{
   color: string;
   description: string;
   title: string;
-}> = async ({ state, actions, effects }, template) => {
-  effects.analytics.track('Template - Created', { source: 'editor' });
-
-  const sandboxId = state.editor.currentSandbox.id;
-
-  try {
-    const newTemplate = await effects.api.createTemplate(sandboxId, template);
-    const sandbox = state.editor.currentSandbox;
-    sandbox.isFrozen = true;
-    sandbox.customTemplate = newTemplate;
-    actions.modalClosed();
-    effects.notificationToast.success('Successfully created the template');
-  } catch (error) {
-    actions.internal.handleError({
-      message: 'Could not create template, please try again later',
-      error,
-    });
-    if (process.env.NODE_ENV === 'development') {
-      console.error(error);
-    }
-  }
-};
+}> = async ({ state, actions, effects }, template) => {};
 
 export const openDefaultItem: Action = ({ state }) => {
   const items = getItems(state);

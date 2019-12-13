@@ -376,8 +376,6 @@ export const forkSandbox: AsyncAction<{
       actions.workspace.openDefaultItem();
     }
 
-    effects.notificationToast.success('Forked sandbox!');
-
     effects.router.updateSandboxUrl(forkedSandbox, { openInNewWindow });
   } catch (error) {
     console.error(error);

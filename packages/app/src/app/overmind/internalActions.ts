@@ -10,7 +10,6 @@ import {
   TabType,
 } from '@codesandbox/common/lib/types';
 import { patronUrl } from '@codesandbox/common/lib/utils/url-generator';
-import { NotificationStatus } from '@codesandbox/notifications';
 import values from 'lodash-es/values';
 
 import { ApiError } from './effects/api/apiFactory';
@@ -71,32 +70,7 @@ export const setSignedInCookie: Action = ({ state }) => {
   document.cookie = 'signedIn=true; Path=/;';
 };
 
-export const showUserSurveyIfNeeded: Action = ({ state, effects, actions }) => {
-  if (state.user.sendSurvey) {
-    // Let the server know that we've seen the survey
-    effects.api.markSurveySeen();
-
-    effects.notificationToast.add({
-      title: 'Help improve CodeSandbox',
-      message:
-        "We'd love to hear your thoughts, it's 7 questions and will only take 2 minutes.",
-      status: NotificationStatus.NOTICE,
-      sticky: true,
-      actions: {
-        primary: [
-          {
-            label: 'Open Survey',
-            run: () => {
-              actions.modalOpened({
-                modal: 'userSurvey',
-              });
-            },
-          },
-        ],
-      },
-    });
-  }
-};
+export const showUserSurveyIfNeeded: Action = ({ state, effects, actions }) => {};
 
 export const addNotification: Action<{
   title: string;
@@ -349,13 +323,6 @@ export const handleError: Action<{
   const isGenericError = !('response' in error) || error.response.status >= 500;
 
   if (isGenericError) {
-    effects.analytics.logError(error);
-    effects.notificationToast.add({
-      title: message,
-      message: error.message,
-      status: NotificationStatus.ERROR,
-    });
-
     return;
   }
 
@@ -365,22 +332,6 @@ export const handleError: Action<{
     // Reset existing sign in info
     effects.jwt.reset();
     effects.analytics.setAnonymousId();
-
-    // Allow user to sign in again in notification
-    effects.notificationToast.add({
-      message: 'Your session seems to be expired, please log in again...',
-      status: NotificationStatus.ERROR,
-      actions: {
-        primary: [
-          {
-            label: 'Sign in',
-            run: () => {
-              actions.signInClicked({ useExtraScopes: false });
-            },
-          },
-        ],
-      },
-    });
 
     return;
   }
@@ -461,13 +412,4 @@ export const handleError: Action<{
       errorMessage: error.message,
     });
   }
-
-  effects.notificationToast.add({
-    title: message,
-    message: error.message,
-    status: NotificationStatus.ERROR,
-    ...(notificationActions.primary.length
-      ? { actions: notificationActions }
-      : {}),
-  });
 };

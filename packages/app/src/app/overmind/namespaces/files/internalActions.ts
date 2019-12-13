@@ -1,61 +1,12 @@
 import { AsyncAction, Action } from 'app/overmind';
-import { NotificationStatus } from '@codesandbox/notifications/lib/state';
 
 import { chunk } from 'lodash-es';
 import { MAX_FILE_SIZE } from 'codesandbox-import-utils/lib/is-text';
 import denormalize from 'codesandbox-import-utils/lib/utils/files/denormalize';
-import { DiffTab, TabType } from '@codesandbox/common/lib/types';
 
 export const recoverFiles: Action = ({ effects, actions, state }) => {
   const sandbox = state.editor.currentSandbox;
-
-  const recoverList = effects.moduleRecover.getRecoverList(
-    sandbox.id,
-    sandbox.modules
-  );
   effects.moduleRecover.clearSandbox(sandbox.id);
-
-  const recoveredList = recoverList
-    .map(({ recoverData, module }) => {
-      if (module.code === recoverData.savedCode) {
-        const titleA = `saved '${module.title}'`;
-        const titleB = `recovered '${module.title}'`;
-        const tab: DiffTab = {
-          type: TabType.DIFF,
-          codeA: module.code || '',
-          codeB: recoverData.code || '',
-          titleA,
-          titleB,
-          fileTitle: module.title,
-          id: `${titleA} - ${titleB}`,
-        };
-        state.editor.tabs.push(tab);
-
-        actions.editor.codeChanged({
-          code: recoverData.code,
-          moduleShortid: module.shortid,
-        });
-
-        return true;
-      }
-
-      return false;
-    })
-    .filter(Boolean);
-  const numRecoveredFiles = recoveredList.length;
-
-  if (numRecoveredFiles > 0) {
-    effects.analytics.track('Files Recovered', {
-      fileCount: numRecoveredFiles,
-    });
-
-    effects.notificationToast.add({
-      message: `We recovered ${numRecoveredFiles} unsaved ${
-        numRecoveredFiles > 1 ? 'files' : 'file'
-      } from a previous session`,
-      status: NotificationStatus.NOTICE,
-    });
-  }
 };
 
 export const uploadFiles: AsyncAction<

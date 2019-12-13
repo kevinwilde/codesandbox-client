@@ -36,7 +36,6 @@ export const pickSandbox: AsyncAction<{
       },
     ];
 
-    effects.notificationToast.success('Sandbox picked');
     state.currentModal = null;
   } catch (error) {
     actions.internal.handleError({

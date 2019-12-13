@@ -1,9 +1,3 @@
-import { notificationState } from '@codesandbox/common/lib/utils/notifications';
-import {
-  NotificationMessage,
-  NotificationStatus,
-} from '@codesandbox/notifications/lib/state';
-
 import { KeyCode, KeyMod } from './keyCodes';
 
 // Copied from 'common/actions' in vscode
@@ -134,14 +128,6 @@ export class Workbench {
           document.exitFullscreen();
         } else {
           document.documentElement.requestFullscreen();
-
-          this.addNotification({
-            title: 'Fullscreen',
-            message:
-              'You are now in fullscreen mode. Press and hold ESC to exit',
-            status: NotificationStatus.NOTICE,
-            timeAlive: 5000,
-          });
 
           if ('keyboard' in navigator) {
             // @ts-ignore - keyboard locking is experimental api
@@ -399,9 +385,5 @@ export class Workbench {
     }
   ) {
     this.monaco.editor.appendMenuItem(menubarId, item);
-  }
-
-  private addNotification(notification: NotificationMessage) {
-    notificationState.addNotification(notification);
   }
 }

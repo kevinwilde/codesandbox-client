@@ -5,7 +5,6 @@ import {
   ServerPort,
   ServerStatus,
 } from '@codesandbox/common/lib/types';
-import { NotificationStatus } from '@codesandbox/notifications/lib/state';
 import { Action, AsyncAction } from 'app/overmind';
 import { getDevToolsTabPosition } from 'app/overmind/utils/server';
 
@@ -83,19 +82,6 @@ export const onSSEMessage: Action<{
       );
       const openedPorts: number[] = [];
 
-      if (removedPorts.length > 0) {
-        effects.notificationToast.add({
-          title: `Server Ports Closed`,
-          message:
-            removedPorts.length === 1
-              ? `Port ${removedPorts[0].port} closed`
-              : `The following ports closed: ${removedPorts
-                  .map(p => p.port)
-                  .join(', ')}`,
-          status: NotificationStatus.NOTICE,
-        });
-      }
-
       editor.devToolTabs.forEach(view => {
         view.views.forEach(tab => {
           if (
@@ -108,25 +94,6 @@ export const onSSEMessage: Action<{
         });
       });
 
-      addedPorts.forEach(port => {
-        if (!port.main && openedPorts.indexOf(port.port) === -1) {
-          effects.notificationToast.add({
-            title: `Port ${port.port} Opened`,
-            message: `The server is listening on port ${port.port}, do you want to open it?`,
-            status: NotificationStatus.NOTICE,
-            actions: {
-              primary: [
-                {
-                  label: 'Open Browser Pane',
-                  run: () => {
-                    actions.server.onBrowserFromPortOpened({ port });
-                  },
-                },
-              ],
-            },
-          });
-        }
-      });
 
       server.ports = newPorts;
 
@@ -139,18 +106,7 @@ export const onSSEMessage: Action<{
       server.error = error;
 
       if (unrecoverable) {
-        effects.notificationToast.add({
-          title: `Container Error`,
-          message: error,
-          status: NotificationStatus.ERROR,
-        });
         effects.executor.closeExecutor();
-      } else {
-        effects.notificationToast.add({
-          title: `Container Warning`,
-          message: error,
-          status: NotificationStatus.WARNING,
-        });
       }
 
       break;

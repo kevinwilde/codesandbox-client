@@ -566,11 +566,6 @@ export const previewActionReceived: Action<{
 }> = ({ state, effects, actions }, { action }) => {
   switch (action.action) {
     case 'notification':
-      effects.notificationToast.add({
-        message: action.title,
-        status: action.notificationType,
-        timeAlive: action.timeAlive,
-      });
       break;
     case 'show-error': {
       const error: ModuleError = {
