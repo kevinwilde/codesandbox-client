@@ -6,7 +6,6 @@ import { getSandboxName } from '@codesandbox/common/lib/utils/get-sandbox-name';
 import { inject, observer } from 'app/componentConnectors';
 import { Skeleton } from 'app/components/Skeleton';
 import { Title } from 'app/components/Title';
-import { Navigation } from 'app/pages/common/Navigation';
 import { NotFound } from 'app/pages/common/NotFound';
 import { QuickActions } from 'app/pages/Sandbox/QuickActions';
 import React from 'react';
@@ -130,9 +129,6 @@ class SandboxPage extends React.Component {
             }}
             margin={1}
           >
-            {store.editor.isLoading ? null : (
-              <Navigation title="Sandbox Editor" />
-            )}
             <Centered
               style={{ flex: 1, width: '100%', height: '100%' }}
               horizontal

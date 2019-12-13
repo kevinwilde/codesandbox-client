@@ -9,7 +9,6 @@ import styled, { ThemeProvider } from 'styled-components';
 
 import Content from './Content';
 import { Container } from './elements';
-import ForkFrozenSandboxModal from './ForkFrozenSandboxModal';
 import { Header } from './Header';
 import { Navigation } from './Navigation';
 import getVSCodeTheme from './utils/get-vscode-theme';
@@ -141,7 +140,6 @@ const ContentSplit: React.FC = () => {
             />
           </div>
         </Fullscreen>
-        <ForkFrozenSandboxModal />
       </Container>
     </ThemeProvider>
   );

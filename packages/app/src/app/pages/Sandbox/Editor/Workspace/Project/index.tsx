@@ -1,12 +1,11 @@
 import React, { FunctionComponent } from 'react';
 
 import { useOvermind } from 'app/overmind';
-import { Stats } from 'app/pages/common/Stats';
 
 // import { Alias } from './Alias';
 import { Author } from './Author';
 import { Description } from './Description';
-import { BasicInfo, Container, Group, StatsContainer } from './elements';
+import { BasicInfo, Container, Group } from './elements';
 import { Environment } from './Environment';
 import { ForkedFrom } from './ForkedFrom';
 import { Frozen } from './Frozen';
@@ -25,7 +24,6 @@ export const Project: FunctionComponent<Props> = ({ editable = false }) => {
   const {
     state: {
       editor: {
-        currentSandbox,
         currentSandbox: {
           author,
           forkedFromSandbox,
@@ -54,10 +52,6 @@ export const Project: FunctionComponent<Props> = ({ editable = false }) => {
       {team && <Team/>}
 
       {git && <Git />}
-
-      <StatsContainer>
-        <Stats sandbox={currentSandbox} />
-      </StatsContainer>
 
       <Keywords editable={editable} />
 

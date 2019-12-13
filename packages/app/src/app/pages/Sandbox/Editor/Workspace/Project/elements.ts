@@ -46,16 +46,6 @@ export const PropertyValue = styled.span<{ relative?: boolean }>`
   `}
 `;
 
-export const StatsContainer = styled(Item)`
-  ${({ theme }) => css`
-    height: 1.5rem;
-    margin-left: 1rem;
-    box-sizing: border-box;
-    color: ${theme.light ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)'};
-    font-size: 0.875rem;
-  `}
-`;
-
 export const EditPenIcon = styled(EditPen)`
   ${({ theme }) => css`
     margin-left: 0.5rem;

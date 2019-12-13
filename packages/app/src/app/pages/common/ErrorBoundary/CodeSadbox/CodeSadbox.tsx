@@ -1,7 +1,6 @@
 import { Button } from '@codesandbox/common/lib/components/Button';
 import { dashboardUrl } from '@codesandbox/common/lib/utils/url-generator';
 import { useOvermind } from 'app/overmind';
-import { Navigation } from 'app/pages/common/Navigation';
 import React, { useEffect } from 'react';
 import GoHome from 'react-icons/lib/go/home';
 import GoIssueOpened from 'react-icons/lib/go/issue-opened';
@@ -15,8 +14,6 @@ import {
   ButtonIcon,
   Container,
   Content,
-  Header,
-  Nav,
   Subtitle,
   Title,
 } from './elements';
@@ -37,11 +34,6 @@ export const CodeSadbox: React.FC<IFallbackComponentProps> = ({
 
   return (
     <Container>
-      <Header>
-        <Nav>
-          <Navigation title="CodeSadbox" />
-        </Nav>
-      </Header>
       <Content>
         <Title>Oh no! Something broke!</Title>
         <Sadbox scale={3} />

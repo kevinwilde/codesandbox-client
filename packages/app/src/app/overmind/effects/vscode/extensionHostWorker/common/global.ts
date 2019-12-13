@@ -1,8 +1,6 @@
 /* eslint-disable global-require */
 import { EventEmitter } from 'events';
 
-import requirePolyfills from '@codesandbox/common/lib/load-dynamic-polyfills';
-
 const ctx: any = self as any;
 declare const __DEV__: boolean;
 
@@ -11,12 +9,6 @@ if (typeof Worker === 'undefined') {
 }
 
 export const initializePolyfills = () => {
-  require('core-js/fn/string/starts-with');
-  require('core-js/fn/string/ends-with');
-  require('core-js/fn/array/find');
-  require('core-js/fn/promise');
-
-  return requirePolyfills();
 };
 
 export const loadBrowserFS = () => {

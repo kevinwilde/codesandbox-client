@@ -9,7 +9,6 @@ import getIcon from '@codesandbox/common/lib/templates/icons';
 import { UserWithAvatar } from '@codesandbox/common/lib/components/UserWithAvatar';
 import Margin from '@codesandbox/common/lib/components/spacing/Margin';
 
-import { Stats } from 'app/pages/common/Stats';
 import { PrivacyStatus } from 'app/components/PrivacyStatus';
 
 import Tooltip from '@codesandbox/common/lib/components/Tooltip';
@@ -121,9 +120,6 @@ export const SandboxInfo = ({ sandbox }: ISandboxInfoProps) => {
             commitSha={sandbox.git.commitSha}
           />
         )}
-      </Margin>
-      <Margin top={1.5}>
-        <Stats sandbox={sandbox} />
       </Margin>
 
       <Group>
