@@ -9,8 +9,6 @@ import getIcon from '@codesandbox/common/lib/templates/icons';
 import { UserWithAvatar } from '@codesandbox/common/lib/components/UserWithAvatar';
 import Margin from '@codesandbox/common/lib/components/spacing/Margin';
 
-import { PrivacyStatus } from 'app/components/PrivacyStatus';
-
 import Tooltip from '@codesandbox/common/lib/components/Tooltip';
 import {
   sandboxUrl,
@@ -68,12 +66,7 @@ export const SandboxInfo = ({ sandbox }: ISandboxInfoProps) => {
         )}
         <div>
           <Title>
-            {getSandboxName(sandbox)}{' '}
-            <PrivacyStatus
-              style={{ marginLeft: '0.25rem' }}
-              asIcon
-              privacy={sandbox.privacy}
-            />
+            {getSandboxName(sandbox)}
           </Title>
           <Tooltip
             boundary="viewport"
